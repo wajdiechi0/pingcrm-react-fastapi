@@ -30,19 +30,18 @@ pingcrm-react-fastapi/
 
 ### Frontend (.env in frontend directory)
 ```env
-VITE_API_URL=http://localhost:8000  # Backend API URL
+VITE_API_URL=https://pingcrm-react-fastapi.onrender.com/api  # Backend API URL
 ```
 
-### Backend (.env in backend directory)
-```env
-# Supabase Database
-SUPABASE_URL=your-supabase-project-url
-SUPABASE_KEY=your-supabase-anon-key
+### Backend Environment Variables
+The backend environment variables are managed through Render's dashboard under the Environment Variables section:
 
-# JWT Authentication
-JWT_SECRET=your-secret-key
-JWT_ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=30
+```env
+# Supabase Configuration (configured in Render's dashboard)
+SUPABASE_URL=your-supabase-project-url
+SUPABASE_ANON_KEY=your-supabase-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+
 
 # CORS Settings
 ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000,https://*.vercel.app,https://pingcrm-react-fastapi.vercel.app
@@ -80,7 +79,7 @@ uvicorn app.main:app --reload
 3. Set the root directory to `backend`
 4. Configure environment variables in Render dashboard (these will be injected at runtime)
 5. Set build command: `pip install -r requirements.txt`
-6. Set start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+6. Set start command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 
 ## CI/CD Pipeline (CircleCI)
 
@@ -109,7 +108,3 @@ Note: Backend environment variables are managed through Render's dashboard and i
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
-
-## License
-
-This project is licensed under the MIT License. 
