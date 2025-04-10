@@ -22,9 +22,7 @@ jobs:
           command: npm install -g vercel
       - run:
           name: Deploy to Vercel
-          command: |
-            cd frontend
-            vercel deploy --prod --token=$VERCEL_TOKEN
+          command: vercel --cwd frontend deploy --prod --token=$VERCEL_TOKEN --yes
 
   build-and-deploy-backend:
     docker:
