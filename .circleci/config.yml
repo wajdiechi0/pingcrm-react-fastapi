@@ -1,0 +1,58 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+
+jobs:
+  build-and-deploy-frontend:
+    docker:
+      - image: cimg/node:20.10
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+          app-dir: ./frontend
+      - run:
+          name: Build Frontend
+          command: |
+            cd frontend
+            npm run build
+      - run:
+          name: Install Vercel CLI
+          command: npm install -g vercel
+      - run:
+          name: Deploy to Vercel
+          command: |
+            cd frontend
+            vercel deploy --prod --token=$VERCEL_TOKEN
+
+  build-and-deploy-backend:
+    docker:
+      - image: cimg/python:3.11
+    steps:
+      - checkout
+      - run:
+          name: Set up Python
+          command: |
+            python -m pip install --upgrade pip
+            cd backend
+            pip install -r requirements.txt
+      - run:
+          name: Deploy to Render
+          command: |
+            curl -X POST "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
+            -H "accept: application/json" \
+            -H "authorization: Bearer $RENDER_API_KEY"
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - build-and-deploy-frontend:
+          filters:
+            branches:
+              only: main
+      - build-and-deploy-backend:
+          filters:
+            branches:
+              only: main 
