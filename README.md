@@ -1,6 +1,6 @@
 # PingCRM React FastAPI
 
-A modern CRM application built with React, FastAPI, and Supabase.
+A modern CRM application built with React, TypeScript, and FastAPI.
 
 ## Features
 
@@ -21,120 +21,95 @@ A modern CRM application built with React, FastAPI, and Supabase.
 ## Project Structure
 
 ```
-.
-├── frontend/               # React frontend application
-│   ├── src/               # Source files
-│   │   ├── components/    # Reusable components
-│   │   ├── pages/        # Page components
-│   │   ├── services/     # API services
-│   │   └── types/        # TypeScript type definitions
-│   └── package.json      # Frontend dependencies
-│
-└── backend/              # FastAPI backend application
-    ├── app/             # Application code
-    │   ├── api/         # API routes
-    │   ├── core/        # Core functionality
-    │   ├── schemas/     # Pydantic schemas
-    │   └── services/    # Business logic
-    ├── requirements.txt # Backend dependencies
-    └── main.py         # Application entry point
+pingcrm-react-fastapi/
+├── frontend/          # React frontend application
+└── backend/           # FastAPI backend application
 ```
 
-## Setup Instructions
+## Environment Variables
 
-### Backend Setup
+### Frontend (.env in frontend directory)
+```env
+VITE_API_URL=http://localhost:8000  # Backend API URL
+```
 
-1. Create a virtual environment and activate it:
-   ```bash
-   cd backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+### Backend (.env in backend directory)
+```env
+# Supabase Database
+SUPABASE_URL=your-supabase-project-url
+SUPABASE_KEY=your-supabase-anon-key
 
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+# JWT Authentication
+JWT_SECRET=your-secret-key
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
 
-3. Set up Supabase:
-   - Create a new project in Supabase
-   - Copy your project URL and service role key
-   - Create a `.env` file in the backend directory:
-     ```
-     SUPABASE_URL=your_project_url
-     SUPABASE_KEY=your_service_role_key
-     ```
+# CORS Settings
+ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000,https://*.vercel.app,https://pingcrm-react-fastapi.vercel.app
+```
 
-4. Initialize the database:
-   ```bash
-   python setup_supabase.py
-   ```
+## Development Setup
 
-5. Start the backend server:
-   ```bash
-   uvicorn main:app --reload
-   ```
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-### Frontend Setup
+### Backend
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
 
-1. Install dependencies:
-   ```bash
-   cd frontend
-   npm install
-   ```
+## Deployment
 
-2. Create a `.env` file in the frontend directory:
-   ```
-   VITE_API_URL=http://localhost:8000
-   ```
+### Frontend (Vercel)
+1. Connect your GitHub repository to Vercel
+2. Set the root directory to `frontend`
+3. Configure environment variables in Vercel dashboard
+4. Deploy
 
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
+### Backend (Render)
+1. Create a new Web Service on Render
+2. Connect your GitHub repository
+3. Set the root directory to `backend`
+4. Configure environment variables in Render dashboard (these will be injected at runtime)
+5. Set build command: `pip install -r requirements.txt`
+6. Set start command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+
+## CI/CD Pipeline (CircleCI)
+
+The project uses CircleCI for continuous integration and deployment of both frontend and backend:
+
+1. Frontend deployment to Vercel
+2. Backend deployment to Render
+
+Required CircleCI environment variables:
+- `VERCEL_TOKEN`: Vercel deployment token
+- `RENDER_API_KEY`: Render API key
+- `RENDER_SERVICE_ID`: Render service ID
+
+Note: Backend environment variables are managed through Render's dashboard and injected at runtime.
 
 ## Development
 
 - Backend API documentation is available at `http://localhost:8000/docs`
 - Frontend development server runs at `http://localhost:5173`
 
-## Testing
-
-### Backend Tests
-```bash
-cd backend
-pytest
-```
-
-### Frontend Tests
-```bash
-cd frontend
-npm test
-```
-
-## Deployment
-
-### Backend Deployment
-1. Set up environment variables on your hosting platform
-2. Deploy the FastAPI application
-3. Run database migrations
-
-### Frontend Deployment
-1. Build the production bundle:
-   ```bash
-   cd frontend
-   npm run build
-   ```
-2. Deploy the contents of the `dist` directory
 
 ## Contributing
 
 1. Fork the repository
-2. Create a feature branch
+2. Create your feature branch
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License. 

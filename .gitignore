@@ -17,13 +17,8 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Environment variables
-.env
-**/.env
-.env.local
-**/.env.local
-.env.*.local
-**/.env.*.local
+# BE Environment variables
+backend/.env
 
 # Editor directories and files
 .vscode/*

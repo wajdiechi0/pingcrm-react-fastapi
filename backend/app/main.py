@@ -25,4 +25,4 @@ app.include_router(companies.router, prefix="/api/companies", tags=["companies"]
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to PingCRM API"} 
+    return {"message": "Welcome to PingCRM API!"} 
